@@ -66,6 +66,7 @@ function draw() {
 }
 function mousePressed() {
     loadFile();
+    text("kewu",20,30);
     /*
     for (var i = 0; i < num; i++) {
         X[i] = random(0, 500);
