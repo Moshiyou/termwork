@@ -59,7 +59,7 @@ function setup() {
 }
 function draw() {
     // put drawing code here
-    background(255,62);
+    //background(255,62);
     drawpicture();
     //update1();
     //loadFile();
