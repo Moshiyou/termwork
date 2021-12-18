@@ -59,7 +59,7 @@ function setup() {
 }
 function draw() {
     // put drawing code here
-    background(255,100);
+    //background(255,100);
     drawpicture();
     //update1();
     //loadFile();
@@ -95,7 +95,7 @@ function drawpicture() {
 }
 
 function loadFile() {
-    table = loadTable("StepData5.csv", "header");
+    table = loadTable("TestData.csv", "header");
 
     // Display the headers 
     for (let h = 0; h < table.getColumnCount(); h++) {
