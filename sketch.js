@@ -23,17 +23,17 @@ var range;
 var rangeRate = 0.0618;
 var growRate = 0.002;
 var changeAngle;
-//strokeWeight()»­±Ê´óĞ¡
-//background(,)±³¾°ÑÕÉ«£¬¿ÉÒÔ´ïµ½²ĞÓ°Ğ§¹û
-//line(,,,,)»­Ïß
+//strokeWeight()ç”»ç¬”å¤§å°
+//background(,)èƒŒæ™¯é¢œè‰²ï¼Œå¯ä»¥è¾¾åˆ°æ®‹å½±æ•ˆæœ
+//line(,,,,)ç”»çº¿
 //translate(,)
-//rotate()»¡¶ÈÖÆ
-//radians()½Ç¶È×ª»¡¶È
+//rotate()å¼§åº¦åˆ¶
+//radians()è§’åº¦è½¬å¼§åº¦
 //scale(,)
-//push()ºÍpop()Ö®¼äÊÜtranslate,rotate,scaleÓ°Ïì(Ò²Ğ´ÔÚÀïÃæ)£¬ÕâÑùÖ®ÍâµÄ²»ÊÜÓ°Ïì
-//millis()»ñÈ¡ºÁÃëÊı
+//push()å’Œpop()ä¹‹é—´å—translate,rotate,scaleå½±å“(ä¹Ÿå†™åœ¨é‡Œé¢)ï¼Œè¿™æ ·ä¹‹å¤–çš„ä¸å—å½±å“
+//millis()è·å–æ¯«ç§’æ•°
 //map()
-//this.pos/vel/acc(×Ô½¨Àà)
+//this.pos/vel/acc(è‡ªå»ºç±»)
 //p5.Vector.mult/add/div/sub
 //normalize()
 
@@ -59,7 +59,7 @@ function setup() {
 }
 function draw() {
     // put drawing code here
-    background(255,38);
+    background(255,62);
     drawpicture();
     //update1();
     //loadFile();
@@ -84,7 +84,7 @@ function drawpicture() {
         for (var i = 0; i < 8; i++) {
             push();
             translate(windowWidth / 2, windowHeight / 2);
-            rotate(PI / 4 * i + changeAngle[j * 8 + i] * sin(millis() * growRate));//»¡¶ÈÖÆ
+            rotate(PI / 4 * i + changeAngle[j * 8 + i] * sin(millis() * growRate));//å¼§åº¦åˆ¶
             var realR = r * pow(rate, j) + range[j * 8 + i] * sin(millis() * growRate);
             ellipse(- realR, 0, realR, realR);
             pop();
@@ -117,8 +117,8 @@ function loadFile() {
 
     for (let i = 0; i < length; i++) {
         // Get position, diameter, name,
-        const x = bubbleData[i].getNum("µã»÷´ÎÊı");
-        //const y = bubbleData[i].getNum("Ê±¿Ì"+x-1);
+        const x = bubbleData[i].getNum("ç‚¹å‡»æ¬¡æ•°");
+        //const y = bubbleData[i].getNum("æ—¶åˆ»"+x-1);
 
         // Put object in array
         //bubbles.push(new Bubble(x, y));
@@ -140,8 +140,8 @@ function loadFile() {
 function drawSingle(i,j) {
     push();
     translate(windowWidth / 2, windowHeight / 2);
-    rotate(PI / 4 * i);//»¡¶ÈÖÆ
-    //radians()½Ç¶È×ª»¡¶È
+    rotate(PI / 4 * i);//å¼§åº¦åˆ¶
+    //radians()è§’åº¦è½¬å¼§åº¦
     ellipse(- r * pow(rate, j), 0, r * pow(rate, j), r * pow(rate, j));
     pop();
 }
