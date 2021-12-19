@@ -95,7 +95,7 @@ function drawpicture() {
 }
 
 function loadFile() {
-    table = loadTable("TestData.csv", "header");
+    table = loadTable("https://github.com/Moshiyou/termwork/blob/HTML/StepData5.csv", "header");
 
     // Display the headers 
     for (let h = 0; h < table.getColumnCount(); h++) {
