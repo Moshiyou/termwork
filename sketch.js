@@ -66,7 +66,7 @@ function draw() {
 }
 function mousePressed() {
     loadFile();
-    text("kewu",20,30);
+    //text("kewu",20,30);
     /*
     for (var i = 0; i < num; i++) {
         X[i] = random(0, 500);
@@ -95,7 +95,7 @@ function drawpicture() {
 }
 
 function loadFile() {
-    table = loadTable("https://github.com/Moshiyou/termwork/blob/HTML/StepData5.csv", "header");
+    table = loadTable("blob/HTML/StepData5.csv", "header");
 
     // Display the headers 
     for (let h = 0; h < table.getColumnCount(); h++) {
