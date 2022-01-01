@@ -1,19 +1,10 @@
-//strokeWeight()画笔大小
-//background(,)背景颜色，可以达到残影效果
-//line(,,,,)画线
-//translate(,)
-//rotate()弧度制
-//radians()角度转弧度
-//scale(,)
-//push()和pop()之间受translate,rotate,scale影响(也写在里面)，这样之外的不受影响
-//millis()获取毫秒数
-//map()
-//this.pos/vel/acc(自建类)
-//p5.Vector.mult/add/div/sub
-//normalize()
-
 var X, Y;
 var num = 150;
+var isSparks = 0;
+var sr = 10;
+var State = 1;//1为畏惧，2为自信
+var isLeave = 0;
+var isCome = 0;
 
 //初始化
 function setup() {
@@ -24,16 +15,66 @@ function setup() {
     for (var i = 0; i < num; i++) {
         X[i] = random(windowWidth * 0.1, windowWidth * 0.9);
         Y[i] = random(0.6 * windowHeight, 0.9 * windowHeight);
-        /*
-        var d = 20;
-        for (var j = 0; j < i - 1; j++) {
-            if ((X[i] - X[j] > -d) && (X[i] - X[j] < 2*d) && (Y[i] - Y[j] > -d) && (Y[i] - Y[j] <2* d)) {
-                X[i] = random(windowWidth * 0.1, windowWidth * 0.9);
-                Y[i] = random(0.6 * windowHeight, 0.9 * windowHeight);
-                j = -1;
+    }
+}
+
+//生成新的人群位置
+function NewPosition() {
+    for (var i = 0; i < num; i++) {
+        X[i] = random(windowWidth * 0.1, windowWidth * 0.9);
+        Y[i] = random(0.6 * windowHeight, 0.9 * windowHeight);
+    }
+}
+
+//更改人群位置
+function ChangePosition() {
+    isLeave = 1;
+    for (var i = 0; i < num; i++) {
+        if (X[i] > 0.5 * windowWidth) {
+            X[i] = X[i] + random(-2, 8);
+        }
+        else {
+            X[i] = X[i] + random(-8, 2);
+        }
+        if (random(0, 1000) > 900) {
+            Y[i] = Y[i] + random(0, 5);
+        }
+        if (X[i] < windowWidth + 50 && X[i] > -50) {
+            isLeave = 0;
+        }
+    }
+}
+
+//更改人群位置2
+function ChangePosition2() {
+    isCome = 1;
+    for (var i = 0; i < num; i++) {
+        if (X[i] > 0.5 * windowWidth) {
+            X[i] = X[i] - random(-3, 7);
+        }
+        else {
+            X[i] = X[i] - random(-7, 3);
+        }
+        if (random(0, 1000) > 900) {
+            if (Y[i] - 5 > 0.518 * windowHeight) {
+                Y[i] = Y[i] - random(0, 5);
             }
         }
-        */
+        if (X[i] < windowWidth * 0.25 || X[i] > windowWidth * 0.75) {
+            isCome = 0;
+        }
+    }
+}
+
+//更改人群位置3
+function ChangePosition3() {
+    for (var i = 0; i < num; i++) {
+            X[i] = X[i] + random(-3, 3);
+        if (random(0, 1000) > 900) {
+            if (Y[i] - 5 > 0.518 * windowHeight) {
+                Y[i] = Y[i] + random(-5, 5);
+            }
+        }
     }
 }
 
@@ -42,64 +83,100 @@ function draw() {
     // put drawing code here
     background(255, 100);
     drawWutai();
-    Wave(0.5);
-    WaveWei(1);
-    Yinfu(5,5,0.1);
+
+    if (status == 1) {
+        Wave();
+        WaveWei(1);
+        Yinfu(5, 5, 0.1);
+        if (isLeave == 0) {
+            ChangePosition();
+        }
+    }
+    else {
+        Wave();
+        SelfWei();
+        Yinfu22(5, 5, 0.1);
+        if (isCome == 0) {
+            ChangePosition2();
+        }
+        else {
+            ChangePosition3();
+        }
+    }
+
+    if (isSparks == 1) {
+        sparks(sr);
+        sr = sr + 2;
+        if (sr > 50) {
+            isSparks = 0;
+        }
+    }
 }
 
 //鼠标左键拖拽响应函数
 function mouseDragged() {
-    mousePressed();
+    sparks(13);
 }
+
 //鼠标左键按下响应函数
 function mousePressed() {
-    var r = 7;
-    var y = 10;
-    for (y; y < 50; y++) {
-        push();
-        stroke(255, 62, 150);
-        fill(255, 62, 150);
-        translate(mouseX, mouseY);
-        ellipse(0, -y, r, r);
-
-        stroke(255, 165, 79);
-        fill(255, 165, 79);
-        rotate(PI / 4);
-        ellipse(0, -y, r, r);
-
-        stroke(255, 255, 79);
-        fill(255, 255, 79);
-        rotate(PI / 4);
-        ellipse(0, -y, r, r);
-
-        stroke(0, 250, 154);
-        fill(0, 250, 154);
-        rotate(PI / 4);
-        ellipse(0, -y, r, r);
-
-        stroke(0, 206, 209);
-        fill(0, 206, 209);
-        rotate(PI / 4);
-        ellipse(0, -y, r, r);
-
-        stroke(0, 191, 255);
-        fill(0, 191, 255);
-        rotate(PI / 4);
-        ellipse(0, -y, r, r);
-
-        stroke(132, 112, 255);
-        fill(132, 112, 255);
-        rotate(PI / 4);
-        ellipse(0, -y, r, r);
-
-        stroke(144, 238, 144);
-        fill(144, 238, 144);
-        rotate(PI / 4);
-        ellipse(0, -y, r, r);
-        pop();
+    isSparks = 1;
+    sr = 10;
+    if (status == 1) {
+        status = 2;
+        isCome = 0;
+    }
+    else {
+        status = 1;
+        isLeave = 0;
     }
 }
 
+//画焰火
+function sparks(y) {
+    var r = 7;
+    push();
+    stroke(255, 62, 150);
+    fill(255, 62, 150);
+    translate(mouseX, mouseY);
+    ellipse(0, -y, r, r);
+
+    stroke(255, 165, 79);
+    fill(255, 165, 79);
+    rotate(PI / 4);
+    ellipse(0, -y, r, r);
+
+    stroke(255, 255, 79);
+    fill(255, 255, 79);
+    rotate(PI / 4);
+    ellipse(0, -y, r, r);
+
+    stroke(0, 250, 154);
+    fill(0, 250, 154);
+    rotate(PI / 4);
+    ellipse(0, -y, r, r);
+
+    stroke(0, 206, 209);
+    fill(0, 206, 209);
+    rotate(PI / 4);
+    ellipse(0, -y, r, r);
+
+    stroke(0, 191, 255);
+    fill(0, 191, 255);
+    rotate(PI / 4);
+    ellipse(0, -y, r, r);
+
+    stroke(132, 112, 255);
+    fill(132, 112, 255);
+    rotate(PI / 4);
+    ellipse(0, -y, r, r);
+
+    stroke(144, 238, 144);
+    fill(144, 238, 144);
+    rotate(PI / 4);
+    ellipse(0, -y, r, r);
+    pop();
+}
 
 //设置浅紫色
 function setColor() {
@@ -155,7 +232,7 @@ function drawRen(x,y) {
     push();
     stroke(255, 174, 185);
     strokeWeight(3.0);
-    translate(x + 5 * cos(millis() * 0.002), y + 5 * sin(millis() * 0.002));
+    translate(x, y);
 
     bezier(30, 30, 32, 35, 38, 38, 40, 40);
     bezier(30, 20, 20, 35, 22, 38, 20, 40);
@@ -188,10 +265,9 @@ function drawWei(x, y) {
 }
 
 //绘制人群
-function Wave(angle) {
+function Wave() {
     for (var i = 0; i < num; i++) {
         push();
-        //rotate(PI * random(-angle, angle) * 1.0 / 180 * 0.168 * sin(millis() * 0.002));
         drawRen(X[i], Y[i]);
         pop();
     }
@@ -202,6 +278,17 @@ function WaveWei(angle) {
     push();
     translate(5 * sin(random(-500, 500) * 0.001), 2 * sin(random(-500, 500) * 0.001));
     drawWei(0.5 * windowWidth, windowHeight * (0.5 - 0.05)-60);
+    pop();
+}
+
+//绘制自信畏
+function SelfWei() {
+    push();
+    scale(1.295+0.005 * sin(millis() * 0.003));
+    translate(-180 , -70 );
+    translate(10 * sin(millis() * 0.003), 0);
+    //rotate(PI * 0.2 / 180 * sin(millis() * 0.004));
+    drawWei(0.5 * windowWidth, windowHeight * (0.5 - 0.05) - 60);
     pop();
 }
 
@@ -253,10 +340,22 @@ function Yinfu2(x, y, s, r, g, b) {
 }
 
 //绘制音符
-function Yinfu(a,b,s) {
+function Yinfu(a, b, s) {
+    push();
+    translate(5 * sin(random(-500, 500) * 0.001), 2 * sin(random(-500, 500) * 0.001));
     Yinfu1(0.5 * windowWidth + 80 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 70 + b *sin(millis() * 0.002), 0.5 + s * sin(millis()*0.002),174,238,238);
     Yinfu2(0.5 * windowWidth + 120 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 80 + b * sin(millis() * 0.002), 0.6 + s * sin(millis() * 0.002),174, 238, 238);
     Yinfu1(0.5 * windowWidth + 140 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 90 + b * sin(millis() * 0.002), 0.7 + s * sin(millis() * 0.002),174, 238, 238);
     Yinfu2(0.5 * windowWidth + 180 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 95 + b * sin(millis() * 0.002), 0.8 + s * sin(millis() * 0.002),174, 238, 238);
     Yinfu1(0.5 * windowWidth + 200 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 100 + b * sin(millis() * 0.002), 0.9 + s * sin(millis() * 0.002),174, 238, 238);
+    pop();
+}
+
+//绘制音符22
+function Yinfu22(a, b, s) {
+    Yinfu1(0.5 * windowWidth + 80 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 70 + b * sin(millis() * 0.002), 0.5 + s * sin(millis() * 0.002), 174, 238, 238);
+    Yinfu2(0.5 * windowWidth + 120 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 80 + b * sin(millis() * 0.002), 0.6 + s * sin(millis() * 0.002), 174, 238, 238);
+    Yinfu1(0.5 * windowWidth + 140 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 90 + b * sin(millis() * 0.002), 0.7 + s * sin(millis() * 0.002), 174, 238, 238);
+    Yinfu2(0.5 * windowWidth + 180 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 95 + b * sin(millis() * 0.002), 0.8 + s * sin(millis() * 0.002), 174, 238, 238);
+    Yinfu1(0.5 * windowWidth + 200 + a * cos(millis() * 0.002), windowHeight * (0.5 - 0.05) - 100 + b * sin(millis() * 0.002), 0.9 + s * sin(millis() * 0.002), 174, 238, 238);
 }
